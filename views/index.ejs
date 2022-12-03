@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CHAT</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <style>
+      #chat {
+        min-width: 50%;
+        max-height: 50vh;
+        min-height: 50vh;
+        overflow-y: scroll;
+        border: 2px solid rgb(124, 124, 124);
+        margin-bottom: 20px;
+        border-radius: 10px;
+        background-color: rgb(247, 247, 247);
+        display: flex;
+        flex-direction: column;
+      }
+      .msgBox {
+        margin: 0px;
+        display: inline;
+        padding: 3px;
+      }
+  </style>
+</head>
+<body>
+  <div class="d-flex flex-column align-items-center">
+    <h1>Chat Guia</h1>
+    <div id="chat">
+
+    </div>
+    <input placeholder="escreva..." class="w-50 mb-3 form-control" type="text" name="" id="msg">
+    <input placeholder="Nome" class="w-50 form-control mb-3 " type="text" name="" id="username">
+    <button onclick="enviar()" type="button" class=" w-50 btn btn-primary btn-lg btn-block">Block level button</button>
+    <hr>
+    
+  </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js"></script>
+
+    <script>
+      let socket = io('http://localhost:3000');
+
+      function enviar() {
+        const msgField = document.getElementById('msg')
+        const userNameField = document.getElementById('username')
+
+        let msg = msgField.value;
+        let userName = userNameField.value
+
+        socket.emit("msg", {msg: msg, userName: userName})
+      }
+
+      socket.on("showMsg", (data) => {
+        const chat = document.getElementById('chat');
+        const p = document.createElement("p");
+        p.classList.add('msgBox')
+        p.innerHTML = data.userName + ": "+ data.msg
+        chat.append(p)
+      })
+    </script>
+  </body>
+</html>
