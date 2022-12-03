@@ -17,13 +17,13 @@ io.on("connection",(socket) => {
 
 app.set("view engine", "ejs");
 
-app.get(port, (req,res) => {
+app.get('/', (req,res) => {
   res.render('index')
 })
 
 
 
 
-http.listen(3000, () => {
+http.listen(port, () => {
   console.log("RODANDO")
 });
